@@ -1,36 +1,46 @@
 
-function executar() {
-// buscando o texto digitado
-var texto = document.getElementById('txtItem').value;
 
-//buscando a div
-    var div = document.querySelector("div.lista");
-//criando a lista
-    var li = document.createElement('li');
-    var ul = document.createElement('ul');
-// adcionando o texto na lista
-   li.appendChild(document.createTextNode(texto));
-// adicionando a lista na div
 
-var excluir = document.createElement('a')
-var textoLink = document.createTextNode(" - Excluir");
-excluir.setAttribute('href', 'javascript:excluirItem(ul)');
-excluir.appendChild(textoLink);
 
-li.appendChild(excluir);
-ul.appendChild(li);
-    div.appendChild(ul);
+var vetorlista = [];
 
-   
+
+function additem(event = null) {
+    if (event.keyCode != 13 || document.getElementById('txtItem').value == '') return;
+
+    var texto = document.getElementById('txtItem').value;
+    vetorlista.push(texto);
+    document.getElementById('txtItem').value = '';
+    renderizar();
+
 }
 
-function excluirItem(itemLista){
+function renderizar() {
+    document.querySelector(".lista ul").innerHTML = '';
 
-    console.log(itemLista);
-    //var elemento_pai = document.body;
-    //elemento_pai.appendChild(itemLista);
+    for (itens of vetorlista) {
+        var ul = document.querySelector(".lista ul");
+        var li = document.createElement('li');
 
-   
+        var link = document.createElement('a');
+        var textolink = document.createTextNode("excluir");
+        link.appendChild(textolink);
+        link.setAttribute('href', '#');
+        var pos = vetorlista.indexOf(itens);
+        link.setAttribute('onclick', 'excluirItem(' + pos + ')');
 
+        var textoli = document.createTextNode(itens) || '';
+        li.appendChild(textoli);
+        li.appendChild(link);
+        ul.appendChild(li);
+    }
+
+
+}
+
+function excluirItem(posicao) {
+
+    vetorlista.splice(posicao, 1);
+    renderizar();
 
 }
